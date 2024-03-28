@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+  name: autogen-studio-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: autogen-studio.cg.cs.akeyless.fans
+      http:
+        paths:
+          - backend:
+              service:
+                name: autogen-studio-service
+                port:
+                  number: 80
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - autogen-studio.cg.cs.akeyless.fans
+      secretName: autogen-studio-tls

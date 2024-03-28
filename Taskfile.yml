@@ -1,0 +1,21 @@
+version: "3"
+
+vars:
+  IMAGE_VERSION: "1.0"
+
+tasks:
+  build-image:
+    desc: Build and push Docker image
+    cmds:
+      - docker buildx build --platform linux/arm64,linux/amd64 -t devorbitus/autogen-studio:{{.IMAGE_VERSION}} -t devorbitus/autogen-studio:latest . --push
+
+  deploy:
+    desc: Deploy using kubectl
+    cmds:
+      - kubectl apply -k .
+    deps: [build-image]
+
+  uninstall:
+    desc: Uninstall deployment
+    cmds:
+      - kubectl delete -k .

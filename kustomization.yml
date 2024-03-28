@@ -1,0 +1,9 @@
+resources:
+  - manifests/deployment.yml
+  - manifests/service.yml
+  - manifests/ingress.yml
+
+secretGenerator:
+  - name: autogen-studio-secret
+    envs:
+      - .env

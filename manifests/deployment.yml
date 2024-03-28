@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autogen-studio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autogen-studio
+  template:
+    metadata:
+      labels:
+        app: autogen-studio
+    spec:
+      containers:
+      - name: autogen-studio
+        image: autogen-studio:latest
+        ports:
+        - containerPort: 8081
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: autogen-studio-secret
+                key: OPENAI_API_KEY
